@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ABTest 测试页面</title>
+
+    <script src="jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="abtest.js?t=1.0" type="text/javascript"></script>
+    <style type="text/css">
+    	body{font-size: 13px;}
+    	h1{font-size: 14px;}
+    	h2{font-size: 13px;}
+
+    	.title{color:#c00;}
+    	.tab-col{width: 500px;height: 300px;}
+    	#res {
+    		padding: 6px; 
+		    width:600px;height:300px;
+		    border:1px solid #333; 
+		    background-color:#eee;
+		    word-wrap:break-word;
+		    word-break:break-all;
+		    overflow: hidden;
+		}
+		#req{padding: 6px; 
+		    width:600px;height:300px;
+		}
+    </style>
+</head>
+<body>
+
+	<p>
+		<h1>基于JS实现的简单版ABTest</h1>
+		<h2 class="title">说明:</h2>
+		<ol>
+			<li>
+			本组件是基于Jquery实现的简单版的ABTest组件; <br/>
+			</li>
+			<li>
+			每一项ABTest(options)必需有 分组名(grpName),测试用例列表(caseList)等属性;<br/>
+			对于每一条测试case,可以实现根据流量或者用户白名单进行分配;	
+			</li>
+			<li>
+			chrome使用文件路径测试时,可能会出现不支持cookie的情况,可以尽量使用其他浏览器进行文件路径测试;<br/> 域名测试不受影响;
+			</li>
+			<li>
+			调用方式: var res = $('body').abTest(options);<br/>
+			返回对象为用例列表(caseList)中选中的一项;(组件会为返回项增加 caseName属性,值为对应的case名称)
+			</li>
+			<li>
+			使用场景:1-根据ABTest的case设置,调整到不同的URL地址;<br/>
+					2-某个Html页面,根据case设置,加载不同的模块;<br/>
+					3-某个Html页面,根据case设置,某模块加载不同的内容; 等
+			</li>
+		</ol>
+	</p>
+
+	<table>
+		<tr>
+			<td class="tab-col" >
+				<h2 class="title">ABTest参数:
+<input type="button" name="btn-test" id='btn-test' value="测试">
+				</h2>
+				
+				<textarea id="req">
+	options = {
+		grpName:"groupName-01",	//分组名
+		userId:"22",			//当前登录的用户ID
+		//测试用例列表; 支持多个测试示例;
+		caseList:{		
+			caseA:{	//A场景
+				"url":"http://url_001",	//跳转地址
+				"pct":30,	//百分比,0-100;
+				"uid":"100,108,1000"	//特定UID设置(如果设置了UID,则uid测量优先,如1,2,3等)
+			},
+			caseB:{//B场景
+				"url":"http://url_002",	
+				"pct":70,	
+				"uid":"22,23"	
+			}
+		}
+	}
+				</textarea>				
+			</td>
+			<td class="tab-col">
+				<h2 class="title">测试结果:</h2>
+				<div id="res"></div>
+			</td>
+		</tr>
+	</table>
+
+	
+	<!--<textarea id='res' style='width:400px;height:100px;'>
+	</textarea>-->
+	
+	<script>
+		$(function(){ 
+		　　$('#btn-test').bind('click',function(){ 
+		　　　　
+				eval( $('#req').val() );
+				var res = $('body').abTest(options);
+				$('#res').html(JSON.stringify(res));
+
+		　　}); 
+		}); 
+
+	</script>
+	
+	
+</body>
+</html>
