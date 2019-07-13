@@ -1,7 +1,7 @@
 # Web-ABTest
 前端简易ABTest组件,基于jquery和jquery.cookie;可以实现随机或根据用户ID进行ABTest分配;
 
-##说明
+## 说明
 1. 本组件是基于Jquery实现的简单版的ABTest组件; 
 2. 每一项ABTest(options)必需有 分组名(grpName),测试用例列表(caseList)等属性;
 对于每一条测试case,可以实现根据流量或者用户白名单进行分配;
